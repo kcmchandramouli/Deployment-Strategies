@@ -18,6 +18,7 @@ on:
         required: false
         description: "Add the Service folder path like aks, vm, vmss etc..."
         type: string
+        default: "aks"
 
 jobs:
   AKS_Deployment:
