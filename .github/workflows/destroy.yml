@@ -1,0 +1,33 @@
+name: Destroy Infrastructure using Terraform
+
+on:
+  workflow_dispatch:  # Allows manual trigger from GitHub UI
+
+jobs:
+  AKS_Destroy:
+    runs-on: ubuntu-latest
+    env:
+      TF_VAR_azure_subscription_id: ${{ secrets.SUBSCRIPTIONID }}
+      TF_VAR_azure_client_id: ${{ secrets.CLIENTID }}
+      TF_VAR_azure_client_secret: ${{ secrets.CLIENTSECRET }}
+      TF_VAR_azure_tenant_id: ${{ secrets.TENANTID }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
+
+      - uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Terraform Init
+        run: |
+          cd aks
+          terraform init -backend-config="key=terraform.tfstate"
+
+      - name: Terraform Destroy
+        run: |
+          cd aks
+          terraform destroy -auto-approve
