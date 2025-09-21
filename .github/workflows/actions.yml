@@ -12,13 +12,13 @@ on:
       - "task/**"
 
   # Allow this workflow to be called from another workflow and accept a working-directory input
-  workflow_call:
-    inputs:
-      working-directory:
-        required: false
-        description: "Add the Service folder path like aks, vm, vmss etc..."
-        type: string
-        default: "aks"
+  # workflow_call:
+  #   inputs:
+  #     working-directory:
+  #       required: false
+  #       description: "Add the Service folder path like aks, vm, vmss etc..."
+  #       type: string
+  #       default: "aks"
 
 jobs:
   AKS_Deployment:
@@ -37,19 +37,27 @@ jobs:
 
       - name: Terraform Initialization
         run: |
-          cd ${{ inputs.working-directory }}
+          cd aks
           terraform init -backend-config="key=terraform.tfstate"
+
+      - name: ls -la
+        run: |
+          ls -la aks
 
       - name: Terraform Plan
         run: |
-          cd ${{ inputs.working-directory }}
+          cd aks
           terraform plan -out=tfplan
+
+      - name: ls -la
+        run: |
+          ls -la aks
 
       - name: Terraform Apply
         run: |
-          cd ${{ inputs.working-directory }}
+          cd aks
           terraform apply -auto-approve tfplan
 
       - name: ls -la
         run: |
-          ls -la ${{ inputs.working-directory }}
+          ls -la aks
