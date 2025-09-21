@@ -1,4 +1,15 @@
 # This is a basic workflow to help you get started with Actions
+name: Azure Service via TF
+
+on:
+  push:
+    branches:
+      - "master"
+      - "task/**"
+  pull_request:
+    branches:
+      - "master"
+      - "task/**"
 
 name: CI
 
@@ -13,24 +24,44 @@ on:
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+  # Allow this workflow to be called from another workflow and accept a working-directory input
+  workflow_call:
+    inputs:
+      working-directory:
+        required: false
+        description: "Add the Service folder path like aks, vm, vmss etc..."
+        type: string
+
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  AKS_Deployment:
     runs-on: ubuntu-latest
+    env:
+      TF_VAR_azure_subscription_id: ${{ secrets.SUBSCRIPTIONID }}
+      TF_VAR_azure_client_id: ${{ secrets.CLIENTID }}
+      TF_VAR_azure_client_secret: ${{ secrets.CLIENTSECRET }}
+      TF_VAR_azure_tenant_id: ${{ secrets.TENANTID }}
+    steps:        
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v1
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world! .github/workflow/actions.yml
-
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      - name: Terraform Initialization
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          cd ${{ inputs.working-directory }}
+          terraform init -backend-config="key=terraform.tfstate"
+
+      - name: Terraform Plan
+        run: |
+          cd ${{ inputs.working-directory }}
+          terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        run: |
+          cd ${{ inputs.working-directory }}
+          terraform apply -auto-approve tfplan
+
+      - name: ls -la
+        run: |
+          ls -la ${{ inputs.working-directory }}
