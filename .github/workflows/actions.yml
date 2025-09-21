@@ -36,7 +36,7 @@ jobs:
         uses: hashicorp/setup-terraform@v1
 
       - name: Azure Login
-        uses: azure/login@v1
+        uses: azure/login@v2
         with:
           client-id: ${{ secrets.CLIENTID }}
           tenant-id: ${{ secrets.TENANTID }}
