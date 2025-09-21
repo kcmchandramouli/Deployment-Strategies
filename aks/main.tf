@@ -3,23 +3,23 @@ resource "azurerm_resource_group" "aks" {
   location = var.location
 }
 
-resource "azurerm_storage_account" "storage_account" {
-  name                     = "my_aks_storage_tf"
-  resource_group_name      = var.resource_group_name
-  location                 = var.location
-  account_tier             = "Standard"
-  account_replication_type = "GRS"
+# resource "azurerm_storage_account" "storage_account" {
+#   name                     = "my_aks_storage_tf"
+#   resource_group_name      = var.resource_group_name
+#   location                 = var.location
+#   account_tier             = "Standard"
+#   account_replication_type = "GRS"
 
-  tags = {
-    environment = "staging"
-  }
-}
+#   tags = {
+#     environment = "staging"
+#   }
+# }
 
-data "azurerm_storage_blob" "blob_container" {
-  name                   = "my-aks-blob-container"
-  storage_account_name   = azurerm_storage_account.storage_account.name #"example-storage-account-name"
-  storage_container_name = "my_aks_blob_container_tf"
-}
+# data "azurerm_storage_blob" "blob_container" {
+#   name                   = "my-aks-blob-container"
+#   storage_account_name   = azurerm_storage_account.storage_account.name #"example-storage-account-name"
+#   storage_container_name = "my_aks_blob_container_tf"
+# }
 
 resource "azurerm_kubernetes_cluster" "aks" {
   name                = var.aks_cluster_name

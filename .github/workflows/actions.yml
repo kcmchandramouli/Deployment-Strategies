@@ -42,7 +42,8 @@ jobs:
       - name: Terraform Initialization
         run: |
           cd aks
-          terraform init -backend-config="key=terraform.tfstate"
+          terraform init
+#  -backend-config="key=terraform.tfstate"
 
       - name: ls -la
         run: |
@@ -51,7 +52,8 @@ jobs:
       - name: Terraform Plan
         run: |
           cd aks
-          terraform plan -out=tfplan
+          terraform plan
+#  -out=tfplan
 
       - name: ls -la
         run: |
@@ -60,7 +62,8 @@ jobs:
       - name: Terraform Apply
         run: |
           cd aks
-          terraform apply -auto-approve tfplan
+          terraform apply -auto-approve
+#  tfplan
 
       - name: ls -la
         run: |
