@@ -46,12 +46,3 @@ variable "node_vm_size" {
   type        = string
   default     = "Standard_D2pls_v5"
 }
-
-variable "storage_account_name" {
-  description = "The name of the storage account for storing Terraform state."
-  type        = string
-}
-variable "container_name" {
-  description = "The name of the container in the storage account for storing Terraform state."
-  type        = string
-}
