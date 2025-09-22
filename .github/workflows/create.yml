@@ -2,14 +2,14 @@
 name: Create Infrastructure using Terraform
 
 on:
-  push:
-    branches:
-      - "master"
-      - "task/**"
-  pull_request:
-    branches:
-      - "master"
-      - "task/**"
+  # push:
+  #   branches:
+  #     - "master"
+  #     - "task/**"
+  # pull_request:
+  #   branches:
+  #     - "master"
+  #     - "task/**"
 
   # Allow this workflow to be called from another workflow and accept a working-directory input
   # workflow_call:
