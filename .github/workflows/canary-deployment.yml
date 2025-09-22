@@ -49,7 +49,7 @@ jobs:
 
       - name: kubectl deploy
         run: |
-          cd Kubernetes/Deployment strategies/Canary
+          cd "Kubernetes/Deployment strategies/Canary"
           kubectl apply -f v1.yml
           kubectl apply -f v2.yml
           kubectl apply -f svc.yml
